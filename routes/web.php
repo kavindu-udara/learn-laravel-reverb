@@ -8,6 +8,7 @@ use App\Events\TestEvent;
 use App\Http\Controllers\ProfileController;
 use App\Models\Message;
 use App\Models\Order;
+use App\Models\Room;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Log;
@@ -35,6 +36,12 @@ Route::get('/orders/{order}', function (Order $order){
     ]);
 });
 
+Route::get('/room/{room}', function (Room $room){
+    return view('room', [
+        'room' => $room
+    ]);
+});
+
 // Route::get('/test-broadcast', function () {
 //     \Log::info('Broadcast test initiated');
 //     // broadcast(new Example);
@@ -53,7 +60,7 @@ Route::get('/test-broadcast', function () {
     \Log::info('Broadcast test initiated');
     event(new \App\Events\TestEvent());
     \Log::info('Broadcast test completed');
-});
+})->middleware('auth')->name('room');
 
 
 Route::get('/dashboard', function () {
