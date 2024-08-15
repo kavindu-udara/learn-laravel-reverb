@@ -23,10 +23,16 @@ Route::get('/broadcast', function () {
 
     // broadcast(new OrderDelivered(User::find(1)))
     sleep(3);
-    broadcast(new OrderDispatched(User::find(1), Order::find(1)));
-    sleep(5);
-    broadcast(new OrderDelivered(User::find(1), Order::find(1)));
+    broadcast(new OrderDispatched(Order::find(1)));
+    sleep(3);
+    broadcast(new OrderDelivered(Order::find(1)));
 
+});
+
+Route::get('/orders/{order}', function (Order $order){
+    return view('order', [
+        'order' => $order
+    ]);
 });
 
 // Route::get('/test-broadcast', function () {

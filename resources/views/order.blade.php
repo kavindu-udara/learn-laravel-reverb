@@ -1,7 +1,9 @@
-<x-app-layout>
+<div>
+
+</div><x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
+            #{{ $order->id }}
         </h2>
     </x-slot>
 
@@ -15,7 +17,7 @@
                     delivered: false
                 }"
                     x-init="
-                    Echo.private('users.{{auth()->id()}}')
+                    Echo.private('orders.{{$order->id}}')
                     .listen('OrderDispatched', (event) => {
                         console.log(event);
                         order = event?.order
@@ -32,9 +34,9 @@
                             Order (# <span x-text="order?.id"></span>) Order has been dispatched
                         </div>
                     </template>
-                    <template x-if="dispatched">
+                    <template x-if="delivered">
                         <div>
-                        Order (# <span x-text="order?.id"></span>) Order has been delivered
+                            Order (# <span x-text="order?.id"></span>) Order has been delivered
                         </div>
                     </template>
                 </div>
@@ -42,13 +44,3 @@
         </div>
     </div>
 </x-app-layout>
-<!-- 
-<script>
-    // fix Echo is not define error
-    window.Echo = Echo;
-    Echo.channel('chat').listen('Example', (event) => {
-        console.log(event);
-    });
-
-    console.log('hello');
-</script> -->
