@@ -9,9 +9,10 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900"
-                x-data="{
+                    x-data="{
                     dispatched: false,
-                    order: null
+                    order: null,
+                    delivered: false
                 }"
                     x-init="
                     Echo.private('users.{{auth()->id()}}')
@@ -20,13 +21,22 @@
                         order = event?.order
                         dispatched = true
                     })
-                "
-                >
-                   <template x-if="dispatched">
-                    <div>
-                        Order (# <span x-text="order?.id"></span>) Order has been dispatched
-                    </div>
-                   </template>
+                        .listen('OrderDelivered', (event) => {
+                        console.log(event);
+                        order = event?.order
+                        delivered = true
+                    })
+                ">
+                    <template x-if="dispatched">
+                        <div>
+                            Order (# <span x-text="order?.id"></span>) Order has been dispatched
+                        </div>
+                    </template>
+                    <template x-if="delivered">
+                        <div>
+                            Order (# <span x-text="order?.id"></span>) Order has been delivered
+                        </div>
+                    </template>
                 </div>
             </div>
         </div>
