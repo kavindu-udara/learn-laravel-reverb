@@ -2,9 +2,11 @@
 
 use App\Events\Chat\ExampleTwo;
 use App\Events\Example;
+use App\Events\OrderDispatched;
 use App\Events\TestEvent;
 use App\Http\Controllers\ProfileController;
 use App\Models\Message;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Log;
@@ -14,8 +16,9 @@ Route::get('/', function () {
 });
 
 Route::get('/broadcast', function () {
-    broadcast(new TestEvent(User::find(1), Message::find(1)));
+    // broadcast(new TestEvent(User::find(1), Message::find(1)));
     // broadcast(new ExampleTwo());
+    broadcast(new OrderDispatched(User::find(1), Order::find(1)));
 });
 
 // Route::get('/test-broadcast', function () {
