@@ -9,32 +9,20 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900"
-                    x-data="{
-                    dispatched: false,
-                    order: null,
-                    delivered: false
-                }"
                     x-init="
-                    Echo.private('users.{{auth()->id()}}')
-                    .listen('OrderDispatched', (event) => {
+                    const channel = Echo.private('app')
+                    channel.listenForWhisper('typing', (event) => {
                         console.log(event);
-                        order = event?.order
-                        dispatched = true
                     })
-                        .listen('OrderDelivered', (event) => {
-                        console.log(event);
-                        order = event?.order
-                        delivered = true
-                    })
+                    setTimeout(() => {
+                        channel.whisper('typing', {
+                            id:1
+                        })
+                    }, 2000)
                 ">
-                    <template x-if="dispatched">
+                    <template>
                         <div>
                             Order (# <span x-text="order?.id"></span>) Order has been dispatched
-                        </div>
-                    </template>
-                    <template x-if="dispatched">
-                        <div>
-                        Order (# <span x-text="order?.id"></span>) Order has been delivered
                         </div>
                     </template>
                 </div>
