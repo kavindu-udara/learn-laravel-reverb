@@ -10,33 +10,21 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900"
                     x-data="{
-                    dispatched: false,
-                    order: null,
-                    delivered: false
+                    usersHere: []
                 }"
                     x-init="
-                    Echo.private('users.{{auth()->id()}}')
-                    .listen('OrderDispatched', (event) => {
-                        console.log(event);
-                        order = event?.order
-                        dispatched = true
-                    })
-                        .listen('OrderDelivered', (event) => {
-                        console.log(event);
-                        order = event?.order
-                        delivered = true
+                    Echo.join('room.{{$room->id}}')
+                    .here((users) => {
+                        console.log(users);
+                        usersHere = users;
                     })
                 ">
-                    <template x-if="dispatched">
-                        <div>
-                            Order (# <span x-text="order?.id"></span>) Order has been dispatched
-                        </div>
-                    </template>
-                    <template x-if="dispatched">
-                        <div>
-                        Order (# <span x-text="order?.id"></span>) Order has been delivered
-                        </div>
-                    </template>
+                    <div>
+                        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Users Here</h2>
+                        <template x-for="user in usersHere">
+                            <div x-text="user.name"></div>
+                        </template>
+                    </div>
                 </div>
             </div>
         </div>
